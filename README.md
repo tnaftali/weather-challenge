@@ -1,26 +1,26 @@
-### get/users
+### GET api/users
 Gets all users
 
-### get/users/{username}
+### GET api/users/{username}
 Get user by username
 
-### post/users/{username}
+### POST api/users/{username}
 Creates new user
 
-### delete/users/{username}
+### DELETE api/users/{username}
 Deletes user by username
 
-### get/boards/{username}
+### GET api/boards/{username}
 Gets boards of an user by username
 
-### get/boards/{username}/{name}
+### GET api/boards/{username}/{name}
 Gets certain board from user by name
 
-### post/boards/{username}/{name}
+### POST api/boards/{username}/{name}
 Creates a board for a certain user with given name
 
-### post/locations/add (with params in body)
+### POST api/locations/add (with params in body)
 Creates or adds location to board
 
-### delete/locations/delete
+### DELETE api/locations/delete
 Deletes location from board
