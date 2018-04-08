@@ -3,7 +3,6 @@ package com.example.weatherchallenge.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
@@ -17,15 +16,19 @@ import java.util.List;
 @JsonIgnoreProperties(value = {"createdAt", "updatedAt"},
         allowGetters = true)
 public class Location implements Serializable {
+    protected Location() {}
+
+    public Location(@NotBlank String name) {
+        this.name = name;
+        this.createdAt = new Date();
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank
-    private String city;
-
-    @NotBlank
-    private String country;
+    private String name;
 
     @ManyToMany(mappedBy = "locations")
     private List<Board> boards = new ArrayList<>();
@@ -34,4 +37,8 @@ public class Location implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
     private Date createdAt;
+
+    public String getName() {
+        return name;
+    }
 }

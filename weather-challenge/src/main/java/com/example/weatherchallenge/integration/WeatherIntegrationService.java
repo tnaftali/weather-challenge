@@ -1,10 +1,10 @@
 package com.example.weatherchallenge.integration;
 
+import com.example.weatherchallenge.integration.model.dto.Weather.WeatherServiceResponseDto;
 import com.fasterxml.jackson.core.type.TypeReference;
 import org.springframework.stereotype.Service;
 import org.yql4j.*;
 import org.yql4j.types.QueryResultType;
-
 import java.io.IOException;
 import java.util.List;
 
@@ -34,7 +34,8 @@ public class WeatherIntegrationService {
         QueryResultType<List<Object>> mappedResult =
                 null;
         try {
-            mappedResult = result.getContentAsMappedObject(new TypeReference<QueryResultType<List<Object>>>() {});
+            mappedResult = result.getContentAsMappedObject(new TypeReference<QueryResultType<List<Object>>>() {
+            });
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -44,7 +45,49 @@ public class WeatherIntegrationService {
         }
     }
 
-    public void getCityCurrentWeather(String city) {
+    public boolean existsLocationCurrentWeather(String city) {
+        YqlResult queryResult = doServiceRequest(city);
+
+        try {
+            mapQueryResult(queryResult);
+        } catch (NullPointerException e) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public WeatherServiceResponseDto getLocationCurrentWeather(String city) {
+        WeatherServiceResponseDto currentWeather;
+        YqlResult queryResult = doServiceRequest(city);
+
+        currentWeather = mapQueryResult(queryResult);
+
+        return currentWeather;
+    }
+
+    private WeatherServiceResponseDto mapQueryResult(YqlResult queryResult) {
+        WeatherServiceResponseDto currentWeather = new WeatherServiceResponseDto();
+        QueryResultType<WeatherServiceResponseDto[]> mappedResult = null;
+        try {
+            mappedResult = queryResult.getContentAsMappedObject(new TypeReference<QueryResultType<WeatherServiceResponseDto[]>>() {
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            for (WeatherServiceResponseDto item : mappedResult.getResults()) {
+                currentWeather = item;
+            }
+        } catch (NullPointerException e) {
+            throw e;
+        }
+
+        return currentWeather;
+    }
+
+    private YqlResult doServiceRequest(String city) {
         YqlClient client = YqlClients.createDefault();
         YqlQuery query = YqlQueryBuilder.fromQueryString(String.format(this.cityQuery, city)).withFormat(ResultFormat.JSON).build();
         YqlResult result = null;
@@ -54,35 +97,11 @@ public class WeatherIntegrationService {
             e.printStackTrace();
         }
 
-        String rawResult = result.getContentAsString();
-
-        //        System.out.println(rawResult);
-
-        // But if you are lazy, you may also get the content mapped as object graph
-        // Please note though: You will have to provide your own mapping classes,
-        // i.e. PlaceArrayType and PlaceType!
-        QueryResultType<List<Object>> mappedResult =
-                null;
-        try {
-            mappedResult = result.getContentAsMappedObject(new TypeReference<QueryResultType<List<Object>>>() {});
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        for (Object item : mappedResult.getResults()) {
-            // Do something with the item
-            System.out.println(item);
-        }
+        return result;
     }
 
     private String formatCities(List<String> cities) {
         System.out.println(cities.toArray().toString());
         return cities.toArray().toString();
-        //        String> dtoList = new ArrayList<>();
-        //        for (Iterator<Board> i = list.iterator(); i.hasNext();) {
-        //            Board item = i.next();
-        //            dtoList.add(item.toDto());
-        //        }
-        //
-        //        return dtoList;
     }
 }

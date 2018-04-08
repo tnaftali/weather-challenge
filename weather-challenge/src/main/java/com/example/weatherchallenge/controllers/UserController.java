@@ -1,13 +1,12 @@
 package com.example.weatherchallenge.controllers;
 
-import com.example.weatherchallenge.exceptions.ResourceNotFoundException;
 import com.example.weatherchallenge.model.User;
+import com.example.weatherchallenge.model.dto.UserDto;
 import com.example.weatherchallenge.repositories.UserRepository;
+import com.example.weatherchallenge.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -16,33 +15,27 @@ public class UserController {
 
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    UserService userService;
 
-    // Get All Users
     @GetMapping("/users")
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
-    // Create a new User
-    @PostMapping("/users")
-    public User createUser(@Valid @RequestBody User user) {
-        return userRepository.save(user);
-    }
-
-    //  Get a Single User
     @GetMapping("/users/{username}")
-    public User getUserById(@PathVariable(value = "username") String username) {
-        return userRepository.findById(username)
-                .orElseThrow(() -> new ResourceNotFoundException("User", "username", username));
+    public UserDto getUserById(@PathVariable(value = "username") String username) {
+        return userService.getById(username);
     }
 
-    // Delete a User
+    @PostMapping("/users/{username}")
+    public UserDto createUser(@PathVariable(value = "username") String username) {
+        return userService.createUser(username);
+    }
+
     @DeleteMapping("/users/{username}")
     public ResponseEntity<?> deleteUser(@PathVariable(value = "username") String username) {
-        User user = userRepository.findById(username)
-                .orElseThrow(() -> new ResourceNotFoundException("User", "username", username));
-
-        userRepository.delete(user);
+        userService.deleteUser(username);
 
         return ResponseEntity.ok().build();
     }

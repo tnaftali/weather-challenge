@@ -3,7 +3,6 @@ package com.example.weatherchallenge.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
@@ -15,10 +14,12 @@ import java.util.Date;
 @JsonIgnoreProperties(value = {"createdAt", "updatedAt"},
         allowGetters = true)
 public class User implements Serializable {
-//    public User(@NotBlank String username) {
-//        this.username = username;
-//        this.createdAt = new Date();
-//    }
+    protected User() { }
+
+    public User(@NotBlank String username) {
+        this.username = username;
+        this.createdAt = new Date();
+    }
 
     @Id
     @NotBlank
@@ -39,9 +40,5 @@ public class User implements Serializable {
 
     public Date getCreatedAt() {
         return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
     }
 }

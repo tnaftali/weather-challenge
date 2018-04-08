@@ -1,32 +1,26 @@
 package com.example.weatherchallenge.controllers;
 
-import com.example.weatherchallenge.iservices.IBoardService;
-import com.example.weatherchallenge.model.Board;
-import com.example.weatherchallenge.model.dto.BoardDto;
+import com.example.weatherchallenge.iservices.ILocationService;
+import com.example.weatherchallenge.model.dto.LocationCriteriaDto;
+import com.example.weatherchallenge.model.dto.LocationDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api")
 public class LocationController {
 
-//    @Autowired
-//    ILocationService locationService;
+    @Autowired
+    ILocationService locationService;
 
-//    @GetMapping("/boards/{username}/{name}")
-//    public BoardDto getBoardByUserAndName(@PathVariable(value = "username") String username, @PathVariable(value = "name") String name) {
-//        return this.boardService.getBoardByUserAndName(username, name);
-//    }
-//
-//    @GetMapping("/boards/{username}")
-//    public List<BoardDto> getAllBoardsByUser(@PathVariable(value = "username") String username) {
-//        return this.boardService.getAllBoardsByUser(username);
-//    }
-//
-//    @PostMapping("/boards/{username}/{name}")
-//    public Board createBoard(@PathVariable(value = "username") String username, @PathVariable(value = "name") String name) {
-//        return boardService.createBoard(name, username);
-//    }
+    @PostMapping("/locations/add")
+    public LocationDto addLocationToBoard(@Valid @RequestBody LocationCriteriaDto locationCriteriaDto) {
+        return locationService.addLocationToBoard(locationCriteriaDto);
+    }
+
+    @DeleteMapping("/locations/delete")
+    public void deleteLocationFromBoard(@Valid @RequestBody LocationCriteriaDto locationCriteriaDto) {
+        locationService.deleteLocationFromBoard(locationCriteriaDto);
+    }
 }
