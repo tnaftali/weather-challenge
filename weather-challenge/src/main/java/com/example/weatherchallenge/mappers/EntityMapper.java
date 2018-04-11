@@ -1,10 +1,13 @@
 package com.example.weatherchallenge.mappers;
 
+import com.example.weatherchallenge.integration.model.dto.Weather.WeatherChannelDto;
+import com.example.weatherchallenge.integration.model.dto.Weather.WeatherServiceResponseDto;
 import com.example.weatherchallenge.model.Board;
 import com.example.weatherchallenge.model.Location;
 import com.example.weatherchallenge.model.User;
 import com.example.weatherchallenge.model.dto.BoardDto;
 import com.example.weatherchallenge.model.dto.LocationDto;
+import com.example.weatherchallenge.model.dto.LocationWeatherDto;
 import com.example.weatherchallenge.model.dto.UserDto;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
@@ -49,12 +52,21 @@ public class EntityMapper {
     }
 
     private ArrayList<String> locationListToArrayList(List<Location> locations) {
-        ArrayList<String> arrayList = new ArrayList<String>();
+        ArrayList<String> arrayList = new ArrayList<>();
         for (Iterator<Location> i = locations.iterator(); i.hasNext(); ) {
             Location item = i.next();
             arrayList.add(item.getName());
         }
 
         return arrayList;
+    }
+
+    public ArrayList<LocationWeatherDto> mapToLocationWeatherDtoList(WeatherServiceResponseDto responseDto) {
+        ArrayList<LocationWeatherDto> locationWeatherDtoList = new ArrayList<>();
+        for (WeatherChannelDto channel: responseDto.channel) {
+            locationWeatherDtoList.add(new LocationWeatherDto(channel.title, channel.item.condition.date, channel.item.condition.temp, channel.units.temperature, channel.item.condition.text ));
+        }
+
+        return locationWeatherDtoList;
     }
 }

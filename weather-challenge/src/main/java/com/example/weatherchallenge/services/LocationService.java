@@ -37,9 +37,10 @@ public class LocationService implements ILocationService {
     LocationHelper locationHelper;
 
     public LocationDto addLocationToBoard(LocationCriteriaDto locationCriteriaDto) {
-        locationValidator.validate(locationCriteriaDto.location);
-
         User user = userSearcher.findById(locationCriteriaDto.username);
+
+        locationValidator.validate(locationCriteriaDto.location, locationCriteriaDto.boardName, user);
+
         Board board = boardSearcher.findByUserAndName(user, locationCriteriaDto.boardName);
         Location location = locationHelper.getOrCreate(locationCriteriaDto.location);
         board.addLocation(location);

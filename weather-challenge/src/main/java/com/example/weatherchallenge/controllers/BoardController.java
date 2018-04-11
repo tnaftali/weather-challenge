@@ -3,9 +3,11 @@ package com.example.weatherchallenge.controllers;
 import com.example.weatherchallenge.integration.WeatherIntegrationService;
 import com.example.weatherchallenge.iservices.IBoardService;
 import com.example.weatherchallenge.model.dto.BoardDto;
+import com.example.weatherchallenge.model.dto.LocationWeatherDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -17,8 +19,8 @@ public class BoardController {
     WeatherIntegrationService weatherIntegrationService;
 
     @GetMapping("/boards/{username}/{name}")
-    public BoardDto getBoardByUserAndName(@PathVariable(value = "username") String username, @PathVariable(value = "name") String name) {
-        return this.boardService.getBoardByUserAndName(username, name);
+    public ArrayList<LocationWeatherDto> getAllBoardLocationsWeather(@PathVariable(value = "username") String username, @PathVariable(value = "name") String name) {
+        return this.boardService.getAllBoardLocationsWeather(username, name);
     }
 
     @GetMapping("/boards/{username}")

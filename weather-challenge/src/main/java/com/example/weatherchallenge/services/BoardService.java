@@ -1,11 +1,14 @@
 package com.example.weatherchallenge.services;
 
 import com.example.weatherchallenge.factories.BoardFactory;
+import com.example.weatherchallenge.integration.WeatherIntegrationService;
+import com.example.weatherchallenge.integration.model.dto.Weather.WeatherServiceResponseDto;
 import com.example.weatherchallenge.iservices.IBoardService;
 import com.example.weatherchallenge.mappers.EntityMapper;
 import com.example.weatherchallenge.model.Board;
 import com.example.weatherchallenge.model.User;
 import com.example.weatherchallenge.model.dto.BoardDto;
+import com.example.weatherchallenge.model.dto.LocationWeatherDto;
 import com.example.weatherchallenge.repositories.BoardRepository;
 import com.example.weatherchallenge.searchers.BoardSearcher;
 import com.example.weatherchallenge.searchers.UserSearcher;
@@ -13,6 +16,7 @@ import com.example.weatherchallenge.validators.BoardValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -29,12 +33,8 @@ public class BoardService implements IBoardService {
     private EntityMapper entityMapper;
     @Autowired
     private UserSearcher userSearcher;
-
-    public BoardDto getBoardByUserAndName(String username, String name) {
-        User user = userSearcher.findById(username);
-
-        return entityMapper.boardToDto(boardSearcher.findByUserAndName(user, name));
-    }
+    @Autowired
+    private WeatherIntegrationService weatherIntegrationService;
 
     public BoardDto createBoard(String boardName, String username) {
         User user = userSearcher.findById(username);
@@ -51,5 +51,15 @@ public class BoardService implements IBoardService {
         User user = userSearcher.findById(username);
 
         return entityMapper.boardListToBoardDtoList(boardRepository.findAllByUser(user));
+    }
+
+    public ArrayList<LocationWeatherDto> getAllBoardLocationsWeather(String username, String boardName) {
+        User user = userSearcher.findById(username);
+
+        String boardLocations = boardRepository.findBoardByUserAndName(user, boardName).getLocationsAsString(); // todo: searcher
+
+        WeatherServiceResponseDto response = weatherIntegrationService.getLocationsCurrentWeather(boardLocations);
+
+        return entityMapper.mapToLocationWeatherDtoList(response);
     }
 }

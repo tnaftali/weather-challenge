@@ -82,6 +82,18 @@ public class Board implements Serializable {
         }
     }
 
+    public String getLocationsAsString() {
+        String locationsString = "";
+
+        for(Location location : locations) {
+            locationsString += "\"" + location.getName() + "\",";
+        }
+
+        locationsString = locationsString.substring(0, locationsString.length() - 1);
+
+        return locationsString;
+    }
+
     public List<Location> getLocations() {
         return locations;
     }
