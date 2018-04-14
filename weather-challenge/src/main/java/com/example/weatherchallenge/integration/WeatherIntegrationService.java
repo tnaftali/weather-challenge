@@ -10,6 +10,7 @@ import java.io.IOException;
 @Service
 public class WeatherIntegrationService {
     private static String query = "select title, item.condition, units from weather.forecast where woeid in (select woeid from geo.places(1) where text in (%s)) and u=\"C\"";
+    private static String existsQuery = "select title, item.condition, units from weather.forecast where woeid in (select woeid from geo.places(1) where text=\"%s\") and u=\"C\"";
 
     public WeatherServiceResponseDto getLocationsCurrentWeather(String location) {
         String formattedQuery = String.format(this.query, location);
@@ -19,7 +20,7 @@ public class WeatherIntegrationService {
     }
 
     public boolean existsLocationCurrentWeather(String location) {
-        String formattedQuery = String.format(this.query, location);
+        String formattedQuery = String.format(this.existsQuery, location);
         YqlResult queryResult = doServiceRequest(formattedQuery);
 
         try {

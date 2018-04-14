@@ -1,0 +1,9 @@
+export const backend_base_endpoint = 'http://localhost:8080';
+export const backend_api_base_endpoint = backend_base_endpoint + '/api';
+export const backend_api_get_users = '/users';
+export const backend_api_boards = '/boards/';
+export const backend_api_users = '/users/';
+export const backend_api_locations = '/locations/';
+export const backend_api_locations_add = backend_api_locations + 'add';
+export const backend_api_locations_delete = backend_api_locations + 'delete';
+export const business_error_code = 418;

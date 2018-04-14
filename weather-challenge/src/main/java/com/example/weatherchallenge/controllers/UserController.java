@@ -7,6 +7,8 @@ import com.example.weatherchallenge.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.transaction.Transactional;
 import java.util.List;
 
 @RestController
@@ -18,6 +20,7 @@ public class UserController {
     @Autowired
     UserService userService;
 
+    @CrossOrigin
     @GetMapping("/users")
     public List<User> getAllUsers() {
         return userRepository.findAll();
@@ -28,11 +31,14 @@ public class UserController {
         return userService.getById(username);
     }
 
+    @CrossOrigin
     @PostMapping("/users/{username}")
     public UserDto createUser(@PathVariable(value = "username") String username) {
         return userService.createUser(username);
     }
 
+    @CrossOrigin
+    @Transactional
     @DeleteMapping("/users/{username}")
     public ResponseEntity<?> deleteUser(@PathVariable(value = "username") String username) {
         userService.deleteUser(username);

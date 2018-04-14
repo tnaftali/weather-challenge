@@ -61,10 +61,14 @@ public class EntityMapper {
         return arrayList;
     }
 
-    public ArrayList<LocationWeatherDto> mapToLocationWeatherDtoList(WeatherServiceResponseDto responseDto) {
+    public ArrayList<LocationWeatherDto> mapToLocationWeatherDtoList(WeatherServiceResponseDto responseDto, Location[] boardLocations) {
         ArrayList<LocationWeatherDto> locationWeatherDtoList = new ArrayList<>();
+
+        int i = 0;
         for (WeatherChannelDto channel: responseDto.channel) {
-            locationWeatherDtoList.add(new LocationWeatherDto(channel.title, channel.item.condition.date, channel.item.condition.temp, channel.units.temperature, channel.item.condition.text ));
+            String locationName = boardLocations[i].getName();
+            locationWeatherDtoList.add(new LocationWeatherDto(locationName, channel.title, channel.item.condition.date, channel.item.condition.temp, channel.units.temperature, channel.item.condition.text ));
+            i++;
         }
 
         return locationWeatherDtoList;

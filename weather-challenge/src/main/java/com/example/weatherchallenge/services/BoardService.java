@@ -6,6 +6,7 @@ import com.example.weatherchallenge.integration.model.dto.Weather.WeatherService
 import com.example.weatherchallenge.iservices.IBoardService;
 import com.example.weatherchallenge.mappers.EntityMapper;
 import com.example.weatherchallenge.model.Board;
+import com.example.weatherchallenge.model.Location;
 import com.example.weatherchallenge.model.User;
 import com.example.weatherchallenge.model.dto.BoardDto;
 import com.example.weatherchallenge.model.dto.LocationWeatherDto;
@@ -56,10 +57,15 @@ public class BoardService implements IBoardService {
     public ArrayList<LocationWeatherDto> getAllBoardLocationsWeather(String username, String boardName) {
         User user = userSearcher.findById(username);
 
-        String boardLocations = boardRepository.findBoardByUserAndName(user, boardName).getLocationsAsString(); // todo: searcher
+        Board board = boardRepository.findBoardByUserAndName(user, boardName);
+        Location[] boardLocations = board.getLocationsArray();
+        String stringBoardLocations =  board.getLocationsAsString(); // todo: searcher
+        if (!stringBoardLocations.equals("")) {
+            WeatherServiceResponseDto response = weatherIntegrationService.getLocationsCurrentWeather(stringBoardLocations);
 
-        WeatherServiceResponseDto response = weatherIntegrationService.getLocationsCurrentWeather(boardLocations);
+            return entityMapper.mapToLocationWeatherDtoList(response, boardLocations);
+        }
 
-        return entityMapper.mapToLocationWeatherDtoList(response);
+        return new ArrayList<LocationWeatherDto>() {};
     }
 }

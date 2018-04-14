@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
@@ -70,9 +71,11 @@ public class Board implements Serializable {
         return user;
     }
 
-    public void addLocation (Location location) { locations.add(location); }
+    public void addLocation(Location location) {
+        locations.add(location);
+    }
 
-    public void removeLocation (String locationName) {
+    public void removeLocation(String locationName) {
         Iterator<Location> it = locations.iterator();
         while (it.hasNext()) {
             if (it.next().getName().equals(locationName)) {
@@ -85,16 +88,23 @@ public class Board implements Serializable {
     public String getLocationsAsString() {
         String locationsString = "";
 
-        for(Location location : locations) {
-            locationsString += "\"" + location.getName() + "\",";
-        }
+        if (locations.size() > 0) {
 
-        locationsString = locationsString.substring(0, locationsString.length() - 1);
+            for (Location location : locations) {
+                locationsString += "\"" + location.getName() + "\",";
+            }
+
+            locationsString = locationsString.substring(0, locationsString.length() - 1);
+        }
 
         return locationsString;
     }
 
     public List<Location> getLocations() {
         return locations;
+    }
+
+    public Location[] getLocationsArray() {
+        return locations.toArray(new Location[locations.size()]);
     }
 }

@@ -1,0 +1,18 @@
+<div class="user-list">
+  <mat-list>
+    <h3 mat-subheader>Users</h3>
+    <mat-list-item *ngFor="let user of users">
+      <button mat-button matTooltip="View boards" (click)="goToUserBoards(user.username)">
+        <i class="material-icons">list</i>
+      </button>
+      <button mat-button matTooltip="Remove user" (click)="deleteUser(user.username)">
+        <i class="material-icons">delete</i>
+      </button>
+      <p mat-line>{{user.username}}</p>
+    </mat-list-item>
+  </mat-list>
+  <br>
+  <button mat-button matTooltip="Create new user" (click)="showAddUserDialog()">
+    <i class="material-icons">add</i>
+  </button>
+</div>

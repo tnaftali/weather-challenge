@@ -14,11 +14,13 @@ public class LocationController {
     @Autowired
     ILocationService locationService;
 
+    @CrossOrigin
     @PostMapping("/locations/add")
     public LocationDto addLocationToBoard(@Valid @RequestBody LocationCriteriaDto locationCriteriaDto) {
         return locationService.addLocationToBoard(locationCriteriaDto);
     }
 
+    @CrossOrigin
     @DeleteMapping("/locations/delete")
     public void deleteLocationFromBoard(@Valid @RequestBody LocationCriteriaDto locationCriteriaDto) {
         locationService.deleteLocationFromBoard(locationCriteriaDto);

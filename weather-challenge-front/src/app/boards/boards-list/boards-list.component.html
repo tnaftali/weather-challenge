@@ -1,0 +1,18 @@
+<div class="board-list">
+  <mat-list>
+    <h3 mat-subheader>{{username}}'s boards</h3>
+    <mat-list-item *ngFor="let board of boards">
+      <button mat-button matTooltip="View" (click)="goToBoardView(board.name)">
+        <i class="material-icons">remove_red_eye</i>
+      </button>
+      <!-- <button mat-button matTooltip="Remove board" (click)="deleteBoard(board.name)">
+        <i class="material-icons">delete</i>
+      </button> -->
+      <p mat-line>{{board.name}}</p>
+    </mat-list-item>
+  </mat-list>
+  <br>
+  <button mat-button matTooltip="Create new board" (click)="showAddBoardDialog()">
+    <i class="material-icons">add</i>
+  </button>
+</div>

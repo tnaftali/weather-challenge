@@ -1,0 +1,28 @@
+<div class="location-board">
+  <h3>{{boardName}}</h3>
+  <div *ngIf="showSpinner">
+    <mat-progress-spinner class="spinner" [color]="color" [mode]="mode" [value]="value">
+    </mat-progress-spinner>
+  </div>
+  <div *ngIf="!showSpinner">
+    <mat-card *ngFor="let location of locations">
+      <mat-card-title>{{location.title}}</mat-card-title>
+      <mat-card-content>
+        <h3>{{location.currentWeather}}</h3>
+        <p>
+          Temperature:
+          {{location.temperature}} °
+        </p>
+        <div>
+          <button mat-button matTooltip="Delete location" (click)="deleteLocation(location.name)">
+            <i class="material-icons">delete</i>
+          </button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <br>
+  <button mat-button matTooltip="Add location" (click)="showAddLocationDialog()">
+    <i class="material-icons">add</i>
+  </button>
+</div>

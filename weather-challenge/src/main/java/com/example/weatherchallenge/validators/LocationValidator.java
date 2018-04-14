@@ -4,7 +4,6 @@ import com.example.weatherchallenge.exceptions.DuplicateEntityException;
 import com.example.weatherchallenge.exceptions.InvalidEntityException;
 import com.example.weatherchallenge.exceptions.ResourceNotFoundException;
 import com.example.weatherchallenge.integration.WeatherIntegrationService;
-import com.example.weatherchallenge.ivalidators.IValidator;
 import com.example.weatherchallenge.model.Board;
 import com.example.weatherchallenge.model.Location;
 import com.example.weatherchallenge.model.User;
@@ -33,7 +32,7 @@ public class LocationValidator {
     }
 
     private void validateLocationWithService(String location) {
-        if (!weatherIntegrationService.existsLocationCurrentWeather("\"" + location + "\"")) {
+        if (!weatherIntegrationService.existsLocationCurrentWeather(location)) {
             throw new InvalidEntityException(this.location, location);
         }
     }
