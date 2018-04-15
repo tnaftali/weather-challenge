@@ -15,6 +15,10 @@ export class NavigationService {
         return this.route.snapshot.params['board'];
     }
 
+    goToUsersList() {
+        this.router.navigate(['./']);
+    }
+
     goToUserBoards(username: string) {
         this.router.navigate(['./boards/' + username]);
     }

@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
@@ -16,8 +15,7 @@ import java.util.List;
 @Entity
 @Table(name = "boards")
 @EntityListeners(AuditingEntityListener.class)
-@JsonIgnoreProperties(value = {"createdAt", "updatedAt"},
-        allowGetters = true)
+@JsonIgnoreProperties(value = {"createdAt", "updatedAt"}, allowGetters = true)
 public class Board implements Serializable {
 
     protected Board() {
@@ -47,6 +45,7 @@ public class Board implements Serializable {
     )
     private List<Location> locations = new ArrayList<>();
 
+    @ManyToOne
     private User user;
 
     @Column(nullable = false, updatable = false)
@@ -85,26 +84,7 @@ public class Board implements Serializable {
         }
     }
 
-    public String getLocationsAsString() {
-        String locationsString = "";
-
-        if (locations.size() > 0) {
-
-            for (Location location : locations) {
-                locationsString += "\"" + location.getName() + "\",";
-            }
-
-            locationsString = locationsString.substring(0, locationsString.length() - 1);
-        }
-
-        return locationsString;
-    }
-
     public List<Location> getLocations() {
         return locations;
-    }
-
-    public Location[] getLocationsArray() {
-        return locations.toArray(new Location[locations.size()]);
     }
 }

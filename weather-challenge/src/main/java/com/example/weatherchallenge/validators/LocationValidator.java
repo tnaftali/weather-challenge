@@ -11,7 +11,6 @@ import com.example.weatherchallenge.repositories.BoardRepository;
 import com.example.weatherchallenge.repositories.LocationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
@@ -46,7 +45,7 @@ public class LocationValidator {
         }
     }
 
-    public void validateLocationExistenceInRepository(String location) {
+    public void validateLocationExistence(String location) {
         if (!locationRepository.existsLocationByName(location)) {
             throw new ResourceNotFoundException(this.location, this.name, location);
         }

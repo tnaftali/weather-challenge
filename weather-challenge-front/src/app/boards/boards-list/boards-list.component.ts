@@ -14,6 +14,9 @@ import { BoardDto } from '../../shared/dto/board.dto';
 export class BoardsListComponent implements OnInit {
   boards: BoardDto[];
   username = this.navigationService.getUsernameFromUrl();
+  color = 'primary';
+  mode = 'indeterminate';
+  showSpinner = true;
 
   constructor(
     private boardService: BoardService,
@@ -22,14 +25,16 @@ export class BoardsListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.getUserBoards(this.username);
+    this.getUserBoards();
   }
 
-  private getUserBoards(username: string) {
-    this.boardService.getAllUserBoards(username).subscribe(boards => this.success(boards));
+  private getUserBoards() {
+    this.showSpinner = true;
+    this.boardService.getAllUserBoards(this.username).subscribe(boards => this.assignBoards(boards));
   }
 
-  private success(boards: any): void {
+  private assignBoards(boards: any): void {
+    this.showSpinner = false;
     this.boards = boards;
   }
 
@@ -39,23 +44,20 @@ export class BoardsListComponent implements OnInit {
       data: { name: '' }
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      this.boardService.addBoard(this.username, result).subscribe(newBoard => this.addBoardToList(newBoard));
+    dialogRef.afterClosed().subscribe(board => {
+      if (board) {
+        this.showSpinner = true;
+        this.boardService.addBoard(this.username, board).subscribe(newBoard => this.getUserBoards());
+      }
     });
   }
 
-  public goToBoardView(boardName: string) {
+  goToBoardView(boardName: string) {
     this.navigationService.goToBoard(this.username, boardName);
   }
 
-  // public deleteBoard(name: string) {
-  //   this.boardService.deleteBoard(name);
-
-  //   this.boards.splice(this.boards.findIndex(x => x.name === name) , 1);
-  // }
-
-  private addBoardToList(user: any) {
-    this.boards.push(user);
+  goToUsersList(boardName: string) {
+    this.navigationService.goToUsersList();
   }
 
 }

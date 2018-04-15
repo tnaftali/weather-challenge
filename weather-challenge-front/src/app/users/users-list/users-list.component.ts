@@ -10,16 +10,29 @@ import { UserDto } from '../../shared/dto/user.dto';
   styleUrls: ['./users-list.component.css']
 })
 export class UsersListComponent implements OnInit {
+  color = 'primary';
+  mode = 'indeterminate';
+  showSpinner = true;
+  public users: UserDto[] = [];
+
   constructor(
     private userService: UserService,
     private navigationService: NavigationService,
     public dialog: MatDialog
   ) { }
 
-  public users: UserDto[] = [];
-
   ngOnInit() {
     this.getUsers();
+  }
+
+  private getUsers() {
+    this.showSpinner = true;
+    this.userService.getAllUsers().subscribe(users => this.assignUsers(users));
+  }
+
+  private assignUsers(users: any): void {
+    this.showSpinner = false;
+    this.users = users;
   }
 
   showAddUserDialog(): void {
@@ -28,31 +41,22 @@ export class UsersListComponent implements OnInit {
       data: { username: '' }
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      this.userService.addUser(result).subscribe(newUser => this.addUserToList(newUser));
+    dialogRef.afterClosed().subscribe(user => {
+      if (user) {
+        this.showSpinner = true;
+        this.userService.addUser(user).subscribe(() => this.getUsers());
+      }
     });
   }
 
-  public deleteUser(username: string) {
+  deleteUser(username: string) {
     this.userService.deleteUser(username);
 
     this.users.splice(this.users.findIndex(x => x.username === username) , 1);
   }
 
-  public goToUserBoards(username: string) {
+  goToUserBoards(username: string) {
     this.navigationService.goToUserBoards(username);
-  }
-
-  private addUserToList(user: any) {
-    this.users.push(user);
-  }
-
-  private getUsers() {
-    this.userService.getAllUsers().subscribe(users => this.success(users));
-  }
-
-  private success(users: any): void {
-    this.users = users;
   }
 
 }

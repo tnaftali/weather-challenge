@@ -18,7 +18,7 @@ export class LocationService {
     deleteLocation(location: string, username: string, boardName: string) {
         const locationCriteriaDto = new LocationCriteriaDto(boardName, username, location);
 
-        return this.httpService.doDelete(backend_api_locations_delete, locationCriteriaDto).subscribe();
+        return this.httpService.doDelete(backend_api_locations_delete, locationCriteriaDto);
     }
 
 }

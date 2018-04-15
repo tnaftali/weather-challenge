@@ -11,7 +11,7 @@
         <h3>{{location.currentWeather}}</h3>
         <p>
           Temperature:
-          {{location.temperature}} °
+          {{location.temperature}} °C
         </p>
         <div>
           <button mat-button matTooltip="Delete location" (click)="deleteLocation(location.name)">
@@ -22,6 +22,12 @@
     </mat-card>
   </div>
   <br>
+  <button mat-button matTooltip="Home" (click)="goToUsersList()">
+    <i class="material-icons">home</i>
+  </button>
+  <button mat-button matTooltip="Boards list" (click)="goToBoardsList()">
+    <i class="material-icons">list</i>
+  </button>
   <button mat-button matTooltip="Add location" (click)="showAddLocationDialog()">
     <i class="material-icons">add</i>
   </button>

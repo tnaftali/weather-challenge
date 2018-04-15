@@ -15,8 +15,14 @@ public class BoardValidator {
     private String name = "Name";
     private String username = "Username";
 
-    public void validate(String boardName, User user) {
+    public void validateDuplicate(String boardName, User user) {
         if (boardRepository.existsBoardByNameAndUser(boardName, user)) {
+            throw new DuplicateEntityException(this.entity, this.name, boardName, this.username, user.getUsername());
+        }
+    }
+
+    public void validateExistence(String boardName, User user) {
+        if (!boardRepository.existsBoardByNameAndUser(boardName, user)) {
             throw new DuplicateEntityException(this.entity, this.name, boardName, this.username, user.getUsername());
         }
     }

@@ -11,8 +11,7 @@ import java.util.Date;
 @Entity
 @Table(name = "users")
 @EntityListeners(AuditingEntityListener.class)
-@JsonIgnoreProperties(value = {"createdAt", "updatedAt"},
-        allowGetters = true)
+@JsonIgnoreProperties(value = {"createdAt"}, allowGetters = true)
 public class User implements Serializable {
     protected User() { }
 
@@ -36,9 +35,5 @@ public class User implements Serializable {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
     }
 }

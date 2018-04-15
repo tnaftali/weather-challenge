@@ -10,9 +10,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class LocationHelper {
     @Autowired
-    LocationSearcher locationSearcher;
+    private LocationSearcher locationSearcher;
     @Autowired
-    LocationFactory locationFactory;
+    private LocationFactory locationFactory;
 
     public Location getOrCreate(String locationName) {
         Location location;

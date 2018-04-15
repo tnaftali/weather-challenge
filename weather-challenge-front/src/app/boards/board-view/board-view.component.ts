@@ -47,15 +47,23 @@ export class BoardViewComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(location => {
-      this.showSpinner = true;
-      this.locationService.addLocation(location, this.username, this.boardName).subscribe(() => this.getBoardLocations());
+      if (location) {
+        this.showSpinner = true;
+        this.locationService.addLocation(location, this.username, this.boardName).subscribe(() => this.getBoardLocations());
+      }
     });
   }
 
   deleteLocation(name: string) {
-    this.locationService.deleteLocation(name, this.username, this.boardName);
+    this.locationService.deleteLocation(name, this.username, this.boardName).subscribe(() => this.getBoardLocations());
+  }
 
-    this.getBoardLocations();
+  goToBoardsList() {
+    this.navigationService.goToUserBoards(this.username);
+  }
+
+  goToUsersList(boardName: string) {
+    this.navigationService.goToUsersList();
   }
 
 }

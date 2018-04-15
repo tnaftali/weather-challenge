@@ -16,7 +16,7 @@ import java.util.List;
 @JsonIgnoreProperties(value = {"createdAt", "updatedAt"},
         allowGetters = true)
 public class Location implements Serializable {
-    protected Location() {}
+    public Location() {}
 
     public Location(@NotBlank String name) {
         this.name = name;
@@ -29,6 +29,9 @@ public class Location implements Serializable {
 
     @NotBlank
     private String name;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private LocationWeatherStatus locationWeatherStatus;
 
     @ManyToMany(mappedBy = "locations")
     private List<Board> boards = new ArrayList<>();

@@ -1,28 +1,32 @@
 package com.example.weatherchallenge.controllers;
 
 import com.example.weatherchallenge.iservices.ILocationService;
+import com.example.weatherchallenge.model.Location;
 import com.example.weatherchallenge.model.dto.LocationCriteriaDto;
-import com.example.weatherchallenge.model.dto.LocationDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api")
 public class LocationController {
-
     @Autowired
-    ILocationService locationService;
+    private ILocationService locationService;
 
     @CrossOrigin
     @PostMapping("/locations/add")
-    public LocationDto addLocationToBoard(@Valid @RequestBody LocationCriteriaDto locationCriteriaDto) {
-        return locationService.addLocationToBoard(locationCriteriaDto);
+    public ResponseEntity<Location> addLocationToBoard(@Valid @RequestBody LocationCriteriaDto locationCriteriaDto) {
+        locationService.addLocationToBoard(locationCriteriaDto);
+
+        return ResponseEntity.ok().build();
     }
 
     @CrossOrigin
     @DeleteMapping("/locations/delete")
-    public void deleteLocationFromBoard(@Valid @RequestBody LocationCriteriaDto locationCriteriaDto) {
+    public ResponseEntity<Location> deleteLocationFromBoard(@Valid @RequestBody LocationCriteriaDto locationCriteriaDto) {
         locationService.deleteLocationFromBoard(locationCriteriaDto);
+
+        return ResponseEntity.ok().build();
     }
 }

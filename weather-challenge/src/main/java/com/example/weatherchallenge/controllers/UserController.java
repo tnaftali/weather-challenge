@@ -1,24 +1,21 @@
 package com.example.weatherchallenge.controllers;
 
+import com.example.weatherchallenge.iservices.IUserService;
 import com.example.weatherchallenge.model.User;
-import com.example.weatherchallenge.model.dto.UserDto;
 import com.example.weatherchallenge.repositories.UserRepository;
-import com.example.weatherchallenge.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import javax.transaction.Transactional;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api")
 public class UserController {
-
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
     @Autowired
-    UserService userService;
+    private IUserService userService;
 
     @CrossOrigin
     @GetMapping("/users")
@@ -26,21 +23,18 @@ public class UserController {
         return userRepository.findAll();
     }
 
-    @GetMapping("/users/{username}")
-    public UserDto getUserById(@PathVariable(value = "username") String username) {
-        return userService.getById(username);
-    }
-
     @CrossOrigin
     @PostMapping("/users/{username}")
-    public UserDto createUser(@PathVariable(value = "username") String username) {
-        return userService.createUser(username);
+    public ResponseEntity<User>  createUser(@PathVariable(value = "username") String username) {
+        userService.createUser(username);
+
+        return ResponseEntity.ok().build();
     }
 
     @CrossOrigin
     @Transactional
     @DeleteMapping("/users/{username}")
-    public ResponseEntity<?> deleteUser(@PathVariable(value = "username") String username) {
+    public ResponseEntity<User> deleteUser(@PathVariable(value = "username") String username) {
         userService.deleteUser(username);
 
         return ResponseEntity.ok().build();

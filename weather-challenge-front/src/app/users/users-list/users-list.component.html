@@ -1,4 +1,8 @@
-<div class="user-list">
+<div *ngIf="showSpinner">
+  <mat-progress-spinner class="spinner" [color]="color" [mode]="mode" [value]="value">
+  </mat-progress-spinner>
+</div>
+<div *ngIf="!showSpinner" class="user-list">
   <mat-list>
     <h3 mat-subheader>Users</h3>
     <mat-list-item *ngFor="let user of users">

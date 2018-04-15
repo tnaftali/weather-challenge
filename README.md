@@ -1,9 +1,6 @@
 ### GET api/users
 Gets all users
 
-### GET api/users/{username}
-Get user by username
-
 ### POST api/users/{username}
 Creates new user
 
@@ -14,7 +11,7 @@ Deletes user by username
 Gets boards of an user by username
 
 ### GET api/boards/{username}/{name}
-Gets certain board from user by name
+Gets weather for locations of a user's board
 
 ### POST api/boards/{username}/{name}
 Creates a board for a certain user with given name

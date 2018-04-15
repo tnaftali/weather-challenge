@@ -13,7 +13,8 @@ import {
   MatTooltipModule,
   MatDialogModule,
   MatFormFieldModule,
-  MatInputModule
+  MatInputModule,
+  MatProgressSpinnerModule
 } from '@angular/material';
 import { FormsModule } from '@angular/forms';
 import { BoardsRoutingModule } from '../boards/boards-routing.module';
@@ -32,6 +33,7 @@ import { BoardService } from '../boards/shared/board.service';
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
+    MatProgressSpinnerModule,
     FormsModule,
     UsersRoutingModule
   ],
