@@ -10,8 +10,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Component
-public class ScheduledTasks {
-    private static final Logger logger = LoggerFactory.getLogger(ScheduledTasks.class);
+public class TaskScheduler {
+    private static final Logger logger = LoggerFactory.getLogger(TaskScheduler.class);
         private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 
     @Autowired
